@@ -1,0 +1,8 @@
+{
+  "events": {
+    "start": "echo \"\\x1Bc\""
+  },
+  "execMap": {
+    "ts": "ts-node"
+  }
+}
