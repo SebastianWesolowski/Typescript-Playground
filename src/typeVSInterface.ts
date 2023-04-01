@@ -1,3 +1,16 @@
+// interface Car = {
+//     name: string;
+//     color: string;
+//     brand: string;
+//     model: string;
+//     year: number;
+//     isActive?: boolean;
+// }
+//
+// interface ExpensiveCar extends Car {
+//     isActive?: string; // Incompatible override for member from InterfaceA
+// }
+
 type Car = {
     name: string;
     color: string;
@@ -8,7 +21,7 @@ type Car = {
 }
 
 type ExpensiveCar = {
-    isActive?: string;
+    isActive?: string; // ✅ overload (isActive : boolean | string)
 } &  Car
 
 
