@@ -1,62 +1,78 @@
-type Car = {
-    name: string;
-    color: string;
-    brand: string;
-    model: string;
-    year: number;
-    isActive?: boolean;
-}
+/*
+* Opanuj JavaScript - Przeprogramowani.pl
+* I. Fundamenty języka JavaScript
+*
+* Ćwiczenie 7 - "Emoji"
+*/
 
-type ExpensiveCar = {
-    isActive?: string;
-} &  Car
+/*
+* Cel zadania
+*------------
+* Zaimplementuj funkcję "useEmoji", która zastąpi wszystkie słowa danego parametru zgodnie
+* z mapowaniem z obiektu "emojiMappings";
+*
+* Przykład:
+* useEmoji('Takiemu zachowaniu mówię stop i to mocny stop!') // => 'Takiemu zachowaniu mówię 🚫 i to mocny 🚫!'
+* useEmoji('Jadę po nowy samochód :D') // => 'Jadę po nowy 🏎 :D'
+*/
 
+const emojiMappings = {
+    'stop': '🚫',
+    'gwiazda': '⭐️',
+    'samochód': '🏎',
+    'buduję': '🧱',
+    'budzik': '⏰'
+};
 
-const cars:Car[] = [
-    {
-        name: 'Ford Mustang 5.0 V8 Mach 1',
-        color: 'Blue',
-        brand: "Ford",
-        model: "Mustang",
-        year: 2019,
-    },
-    {
-        name: 'Ferrari 458 Italia Standard',
-        color: 'Red',
-        brand: "Ferrari",
-        model: "458 Italia",
-        year: 2010,
-    },
-    {
-        name: 'Ferrari 458 Italia Standard',
-        color: 'Red',
-        brand: "Ferrari",
-        model: "458 Italia",
-        year: 2010,
-        isActive: false,
-    }
-]
-
-const newCars:ExpensiveCar[] = [
-    {
-        name: 'Ferrari 458 Italia Standard',
-        color: 'Red',
-        brand: "Ferrari",
-        model: "458 Italia",
-        year: 2010,
-        isActive: false,
-        cost: 3000000
-    }
-]
-
-
-function logProduct(products:Car[]) {
-    products.forEach((oneCar) => {
-        const description = `A product named ${oneCar.name}, which is in the color ${oneCar.color}. The car ${oneCar.name} was manufactured in the year ${oneCar.year} by the company
-${oneCar.brand}. The model shown is ${oneCar.model}`
-        console.log(description)
-        console.log('--');
+function useEmoji(input) {
+    let sentence = input.split(' ')
+    Object.keys(emojiMappings).forEach((key)=>{
+        if(input.toLowerCase().includes(key)) {
+            sentence = sentence.map((word)=> {
+                    const test = word.toLowerCase().replace(/[^a-ż]/gi, "");
+                    // const regex = new RegExp(`\\b${key}\\b`, "gui");
+                    // const checkWord = word.toLowerCase().replace(/[^a-ż]/gi, "");
+                    // console.log(checkWord, key)
+                    // const regex = new RegExp(`\\b${key}\\b`, "gui");
+                    // // const regex = new RegExp(`${key}`, 'ig');
+                    // word.replaceAll(regex, emojiMappings[key]);
+                    return test === key ? test.replace(test, emojiMappings[key]) : word
+            })
+        }
     })
+
+    // Object.keys(emojiMappings).forEach((key)=>{
+    //     const regex = new RegExp(`${key}`, 'ig');
+    //     sentence = sentence.replaceAll(regex, emojiMappings[key])
+    // })
+
+    return sentence.join(' ');
 }
 
-logProduct(cars);
+/* Weryfikacja */
+
+function verify(input, goal) {
+    if (input === goal) {
+        console.log('Gratulacje!');
+    } else {
+        console.log(`Niestety, oczekiwano - ${goal}, otrzymano - ${input}`);
+    }
+}
+
+
+verify(
+    useEmoji("Takiemu zachowaniu mówię stop i to mocny estop!"),
+    "Takiemu zachowaniu mówię 🚫 i to mocny estop!"
+);
+verify(useEmoji("Jadę po nowy samochód :D"), "Jadę po nowy 🏎 :D");
+verify(useEmoji("Jadę po nowy samochódy :D"), "Jadę po nowy samochódy :D");
+verify(
+    useEmoji("Właśnie buduję swoje skille w JS"),
+    "Właśnie 🧱 swoje skille w JS"
+);
+verify(
+    useEmoji("Właśnie nadbuduję swoje skille w JS"),
+    "Właśnie nadbuduję swoje skille w JS"
+);
+verify(useEmoji("Buduję samochód"), "🧱 🏎");
+verify(useEmoji("BuDuję SaMocHód."), "🧱 🏎.");
